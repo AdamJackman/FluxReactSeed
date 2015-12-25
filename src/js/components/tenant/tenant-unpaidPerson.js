@@ -1,6 +1,6 @@
 import React from 'react';
 import TenantButton from './tenant-button';
-import TenantActions from '../actions/tenant-actions';
+import TenantActions from '../../actions/tenant-actions';
 
 export default ( props ) => {
 
@@ -9,8 +9,8 @@ export default ( props ) => {
 		<tr>
 			<td> { props.tenant.firstName } </td>
 			<td> { props.tenant.lastName } </td>
-			<td> { props.tenant.rentCost } </td>
-			<td> { props.tenant.rentBehind } </td>
+			<td> ${ props.tenant.rentCost } </td>
+			<td> ${ props.tenant.rentBehind } </td>
 			<td>
 				<div className="btn-group">
 					<TenantButton
@@ -23,7 +23,7 @@ export default ( props ) => {
 					/>
 				</div>
 			</td>
-			<td>{ props.rentCost + props.rentBehind } </td>
+			<td>${ props.tenant.rentCost + props.tenant.rentBehind } </td>
 		</tr>
 	);
 }

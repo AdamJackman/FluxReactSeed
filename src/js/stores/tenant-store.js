@@ -54,7 +54,10 @@ const _findOwingTenant = ( tenant ) => {
 };
 
 const _removeOwingTenant = ( tenant ) => {
-	_owingTenants.splice( _owingTenants.findIndex( i => i === tenant), 1); 
+	const found = _findOwingTenant( tenant );
+	if( found ) {
+		_owingTenants.splice( _owingTenants.findIndex( i => i === tenant), 1); 
+	}
 };
 
 const _addOwingTenant = ( tenant ) => {
@@ -64,6 +67,11 @@ const _addOwingTenant = ( tenant ) => {
 		_owingTenants.push( tenant );
 	}
 };
+
+const _isEmptyOwingTenants = () => {
+		return (_owingTenants.length > 0);
+}
+
 
 const TenantStore = Object.assign(EventEmitter.prototype, {
 	emitChange(){
@@ -87,6 +95,18 @@ const TenantStore = Object.assign(EventEmitter.prototype, {
 	getOwingTenants(){
 		return _owingTenants;
 	},
+
+	isTenantOwing( tenant ){
+		return _findOwingTenant( tenant );
+	},
+
+	getTenantInfo( tenant ){
+		return _findTenant( tenant );
+	},
+
+	hasOwingTenant(){
+		return _isEmptyOwingTenants();
+	},	
 
 	dispatcherIndex: register ( function( action ){
 		switch(action.actionType){
