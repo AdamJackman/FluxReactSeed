@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 export default () => {
 	return (		
 		<nav>
-			<div className="nav-wrapper grey darken-3">				
+			<div className="nav-wrapper deep-orange lighten-1">				
 			 	<Link to="/" className="brand-logo" style={{marginLeft:'5%', textDecoration:'none'}}>   		
 			  		Landlord App
 			 	</Link>			 	

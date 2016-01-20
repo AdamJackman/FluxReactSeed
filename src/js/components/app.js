@@ -5,6 +5,7 @@ import TenantInfoView from './tenant/tenant-infoView';
 import PropertyView from './property/property-view';
 import Template from './app-template';
 import { Router, Route, IndexRoute } from 'react-router';
+import '../../css/app-css.css';
 
 
 export default () => {

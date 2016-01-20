@@ -1,7 +1,7 @@
 import React from 'react';
 import PropertyStore from '../../stores/property-store';
 import PropertyStoreMixin from '../../mixins/property-watchMixin';
-
+import PropertyNav from './property-nav';
 
 function getProperties(){
 	return { properties: PropertyStore.getProperties() }
@@ -14,8 +14,7 @@ const PropertyView = ( props ) =>{
 	// });
 	return (
 		<div>
-			TEST
-
+			Test
 		</div>
 	);
 }

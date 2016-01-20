@@ -11,6 +11,7 @@ module.exports = {
 	},
 	module: {
 		loaders: [
+			//Bundle js
 			{
 				test: /\.jsx?$/,
 				exclude: /(node_modules|bower_components)/,
@@ -18,6 +19,11 @@ module.exports = {
 				query: {
 					presets: ['es2015', 'react']
 				}
+			},
+			//Bundle CSS
+			{
+				test: /\.css$/,
+				loader: "style!css"
 			}
 		]
 	}

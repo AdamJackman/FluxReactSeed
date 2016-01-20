@@ -2,13 +2,36 @@ import { dispatch, register } from '../dispatchers/app-dispatcher';
 import { EventEmitter } from 'events';
 import PropertyConstants from '../constants/property-constants';
 
+var _properties = [];
+//CREATE DUMMY DATA -- THIS SHOULD BE FROM THE DATABASE
+for ( let i=0; i<4; i++){
+	_properties.push( { 
+		'id': ''+i,
+		'addr_line1':i + ' test road',
+		'addr_line2':'P0 Box' + (i*i) ,
+		'city': 'Toronto',
+		'state': 'Ontario',
+		'country': 'Canada',
+		'zip':'1A2B3C',
+		'phone':'902-789-8447'
+	} );
+}
+
+
 const CHANGE_EVENT = 'change'
 
+const _findProperty = ( property ) => {
+	return _properties.find( t => t.id === property.id );
+};
+
 const _addProperty = ( property ) => {
-	return true;
+	const found = _findProperty( property );
+	if( !found ) {
+		_properties.push( property );
+	}
 }
-const _removeProperty = ( property ) => {
-	return true;
+const _removeProperty = ( property ) => {	
+	_properties.splice( _properties.findIndex( i => i === property), 1); 
 }
 const _addTenantToProperty = ( tenant, property ) => {
 	return true;
@@ -31,7 +54,9 @@ const PropertyStore = Object.assign(EventEmitter.prototype, {
 	},
 
 	getProperties(){
-		return "test";
+		return _properties.map(property => {
+			return Object.assign( {}, property );
+		});
 	},
 
 	dispatcherIndex: register ( function( action ){
