@@ -87,9 +87,17 @@ const TenantStore = Object.assign(EventEmitter.prototype, {
 	},
 
 	getTenants(){
+		//Populate _tenants with the JSON for all properties
 		return _tenants.map(tenant => {
 			return Object.assign( {}, tenant, _owingTenants.find( owingTenant => owingTenant.id === tenant.id ) );
 		});
+	},
+
+	getTenants( propertyId ){
+		//Populate _tenants with the JSON for the specific property id
+		return _tenants.map(tenant => {			
+			return Object.assign( {}, tenant, _owingTenants.find( owingTenant => owingTenant.id === tenant.id ) );
+		});	
 	},
 
 	getOwingTenants(){
@@ -127,28 +135,3 @@ const TenantStore = Object.assign(EventEmitter.prototype, {
 	})
 });
 export default TenantStore;
-/*
-
-var _properties = [];
-
-//CREATE DUMMY DATA -- THIS SHOULD BE FROM THE DATABASE
-for( let i=0; i<2; i++){
-	_properties.push( {
-		'name':'testProperty',
-		'description':'Lorem Ipsum',
-		'streetAddress':'7 Lucky Street',		
-		'city':'Black Cat',
-		'rentCost':'$500.00'
-		'tenants': ''		
-	} );
-}
-
-const _addTenant = ( tenant ) => {
-
-}
-
-const _removeTenant = ( tenant ) => {
-
-}
-
-*/

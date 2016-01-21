@@ -2,9 +2,11 @@ import React from 'react';
 import PropertyStore from '../../stores/property-store';
 import PropertyStoreMixin from '../../mixins/property-watchMixin';
 import PropertyNav from './property-nav';
+import TenantView from '../tenant/tenant-view';
 
-function getProperties(){
-	return { properties: PropertyStore.getProperties() }
+function getProperties( props ){
+	console.log( props.routeParams.id )
+	return { properties: PropertyStore.getProperties() }	
 }
 
 const PropertyView = ( props ) =>{
@@ -14,7 +16,8 @@ const PropertyView = ( props ) =>{
 	// });
 	return (
 		<div>
-			Test
+			<div> TODO: HEADER </div>
+			<TenantView propertyId={ props.routeParams.id } />
 		</div>
 	);
 }
