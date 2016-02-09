@@ -7,6 +7,8 @@ import Template from './app-template';
 import { Router, Route, IndexRoute } from 'react-router';
 import '../../css/app-css.css';
 
+import DBTest from './property/db-connect-test';
+
 
 export default () => {
 
@@ -17,6 +19,7 @@ export default () => {
 					<Route path="unpaid" component={ UnpaidView } />
 					<Route path="tenant/:id" component={ TenantInfoView } />
 					<Route path="properties/:id" component={ PropertyView } />
+                    <Route path="dbTest" component={ DBTest } />
 				</Route>
 			</Router>
 		);

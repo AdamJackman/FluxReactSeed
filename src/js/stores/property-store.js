@@ -1,6 +1,8 @@
 import { dispatch, register } from '../dispatchers/app-dispatcher';
 import { EventEmitter } from 'events';
 import PropertyConstants from '../constants/property-constants';
+import AppConstants from '../constants/app-constants';
+import jQuery from 'jquery';
 
 var _properties = [];
 //CREATE DUMMY DATA -- THIS SHOULD BE FROM THE DATABASE
@@ -19,6 +21,19 @@ for ( let i=0; i<4; i++){
 
 
 const CHANGE_EVENT = 'change'
+
+const _getProperties = () => {
+        jQuery.get({
+            url: AppConstants.BACKEND_URL + '/users',
+            success: function(data) {
+                console.log("success! " + data);
+            },
+            error: function(xhr, status, err) {
+                console.log("Failure! " + err);
+            }
+        });
+}
+
 
 const _findProperty = ( property ) => {
 	return _properties.find( t => t.id === property.id );
@@ -40,6 +55,7 @@ const _removeTenantFromProperty = ( tenant, property ) => {
 	return true;
 }
 
+
 const PropertyStore = Object.assign(EventEmitter.prototype, {
 	emitChange(){
 		this.emit( CHANGE_EVENT );
@@ -58,6 +74,10 @@ const PropertyStore = Object.assign(EventEmitter.prototype, {
 			return Object.assign( {}, property );
 		});
 	},
+    
+    testQuery(){
+        _getProperties();
+    },
 
 	dispatcherIndex: register ( function( action ){
 		switch(action.actionType){
