@@ -6,6 +6,7 @@ import jQuery from 'jquery';
 
 var _properties = [];
 //CREATE DUMMY DATA -- THIS SHOULD BE FROM THE DATABASE
+/*
 for ( let i=0; i<4; i++){
 	_properties.push( { 
 		'id': ''+i,
@@ -18,21 +19,23 @@ for ( let i=0; i<4; i++){
 		'phone':'902-789-8447'
 	} );
 }
+*/
 
 
 const CHANGE_EVENT = 'change'
 
-const _getProperties = () => {
-        jQuery.get({
-            url: AppConstants.BACKEND_URL + '/users',
-            success: function(data) {
-                console.log("success! " + data);
-            },
-            error: function(xhr, status, err) {
-                console.log("Failure! " + err);
-            }
-        });
-}
+
+jQuery.get({
+    url: AppConstants.BACKEND_URL + '/users',
+    success: function(data) {
+        console.log("success! " + data);
+        _properties = data;
+    },
+    error: function(xhr, status, err) {
+        console.log("Failure! " + err);
+        _properties = [];
+    }
+});
 
 
 const _findProperty = ( property ) => {
@@ -74,10 +77,6 @@ const PropertyStore = Object.assign(EventEmitter.prototype, {
 			return Object.assign( {}, property );
 		});
 	},
-    
-    testQuery(){
-        _getProperties();
-    },
 
 	dispatcherIndex: register ( function( action ){
 		switch(action.actionType){
