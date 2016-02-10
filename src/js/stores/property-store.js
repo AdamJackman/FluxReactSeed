@@ -19,7 +19,7 @@ const _updateProperties = () =>{
             }            
         },
         error: function(xhr, status, err) {
-            console.log("Failured properties update " + err);
+            console.log("Failure properties update " + err);
         }
     });        
 }
@@ -57,7 +57,7 @@ const PropertyStore = Object.assign(EventEmitter.prototype, {
 	removeChangeListener( callback ){
 		this.removeListener( CHANGE_EVENT, callback );
 	},
-
+    
 	getProperties(){
         _updateProperties();
         return _properties.map(property => {
@@ -65,7 +65,7 @@ const PropertyStore = Object.assign(EventEmitter.prototype, {
         });        
 	},
 
-	dispatcherIndex: register ( function( action ){                
+	dispatcherIndex: register ( function( action ){       
 		switch(action.actionType){
 			case PropertyConstants.ADD_PROPERTY:
 				_addProperty( action.property );

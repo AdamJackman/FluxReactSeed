@@ -4,8 +4,8 @@ import TenantPerson from './tenant-person';
 import TenantStoreMixin from '../../mixins/tenant-watchMixin';
 
 function getTenants( props ){	
-	console.log( props );
-	return { tenants: TenantStore.getTenants( props.property ) }
+	console.log( 'Grabbing tenants ' + props );
+	return { tenants: TenantStore.getTenants( props.propertyId ) }
 }
 
 const TenantView = ( props ) =>{

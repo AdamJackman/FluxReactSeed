@@ -1,23 +1,29 @@
 import { dispatch, register } from '../dispatchers/app-dispatcher';
 import { EventEmitter } from 'events';
 import TenantConstants from '../constants/tenant-constants';
+import AppConstants from '../constants/app-constants';
+import jQuery from 'jquery';
 
 const CHANGE_EVENT = 'change'
 
 var _tenants = [];
 
-//CREATE DUMMY DATA -- THIS SHOULD BE FROM THE DATABASE
-for ( let i=0; i<4; i++){
-	_tenants.push( { 
-		'id': ''+i,
-		'firstName':'First'+i,
-		'lastName':'Last',
-		'contactNumber':'902-789-8447',
-		'contactEmail':'FirstLast@gmail.com',
-		'rentPaid': 'YES',
-		'rentBehind': 0,
-		'rentCost': 500.00	
-	} );
+const _updateTenants = ( propId ) =>{
+    if(propId){
+        jQuery.get({
+            url: AppConstants.BACKEND_URL + TenantConstants.URL_GET_PATH_FOR + propId,
+            success: function(data) {
+                console.log("successful tenant update: " + data);            
+                if (JSON.stringify(_tenants) != JSON.stringify(data)){
+                    _tenants = data;    
+                    TenantStore.emitChange();
+                }            
+            },
+            error: function(xhr, status, err) {
+                console.log("Failure tenant update " + err);
+            }
+        });            
+    }    
 }
 
 const _findTenant = ( tenant ) => {
@@ -38,16 +44,6 @@ const _addTenant = ( tenant ) => {
 
 
 var _owingTenants = [];
-_owingTenants.push( { 
-		'id': '11',
-		'firstName':'Adam',
-		'lastName':'Jackman',
-		'contactNumber':'902-789-8447',
-		'contactEmail':'ajackman@gmail.com',
-		'rentPaid': 'YES',
-		'rentBehind': 500.00,
-		'rentCost': 500.00	
-});
 
 const _findOwingTenant = ( tenant ) => {
 	return _owingTenants.find( owingTenant => owingTenant.id === tenant.id );
@@ -87,7 +83,7 @@ const TenantStore = Object.assign(EventEmitter.prototype, {
 	},
 
 	getTenants(){
-		//Populate _tenants with the JSON for all properties
+		//Populate _tenants with the JSON for all properties        
 		return _tenants.map(tenant => {
 			return Object.assign( {}, tenant, _owingTenants.find( owingTenant => owingTenant.id === tenant.id ) );
 		});
@@ -95,6 +91,7 @@ const TenantStore = Object.assign(EventEmitter.prototype, {
 
 	getTenants( propertyId ){
 		//Populate _tenants with the JSON for the specific property id
+        _updateTenants( propertyId );
 		return _tenants.map(tenant => {			
 			return Object.assign( {}, tenant, _owingTenants.find( owingTenant => owingTenant.id === tenant.id ) );
 		});	
