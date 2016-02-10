@@ -5,38 +5,24 @@ import AppConstants from '../constants/app-constants';
 import jQuery from 'jquery';
 
 var _properties = [];
-//CREATE DUMMY DATA -- THIS SHOULD BE FROM THE DATABASE
-/*
-for ( let i=0; i<4; i++){
-	_properties.push( { 
-		'id': ''+i,
-		'addr_line1':i + ' test road',
-		'addr_line2':'P0 Box' + (i*i) ,
-		'city': 'Toronto',
-		'state': 'Ontario',
-		'country': 'Canada',
-		'zip':'1A2B3C',
-		'phone':'902-789-8447'
-	} );
-}
-*/
-
 
 const CHANGE_EVENT = 'change'
 
-
-jQuery.get({
-    url: AppConstants.BACKEND_URL + '/users',
-    success: function(data) {
-        console.log("success! " + data);
-        _properties = data;
-    },
-    error: function(xhr, status, err) {
-        console.log("Failure! " + err);
-        _properties = [];
-    }
-});
-
+const _updateProperties = () =>{
+    jQuery.get({
+        url: AppConstants.BACKEND_URL + PropertyConstants.URL_GET_PATH,
+        success: function(data) {
+            console.log("successful properties update: " + data);            
+            if (JSON.stringify(_properties) != JSON.stringify(data)){
+                _properties = data;    
+                PropertyStore.emitChange();
+            }            
+        },
+        error: function(xhr, status, err) {
+            console.log("Failured properties update " + err);
+        }
+    });        
+}
 
 const _findProperty = ( property ) => {
 	return _properties.find( t => t.id === property.id );
@@ -73,12 +59,13 @@ const PropertyStore = Object.assign(EventEmitter.prototype, {
 	},
 
 	getProperties(){
-		return _properties.map(property => {
-			return Object.assign( {}, property );
-		});
+        _updateProperties();
+        return _properties.map(property => {
+            return Object.assign( {}, property );
+        });        
 	},
 
-	dispatcherIndex: register ( function( action ){
+	dispatcherIndex: register ( function( action ){                
 		switch(action.actionType){
 			case PropertyConstants.ADD_PROPERTY:
 				_addProperty( action.property );
